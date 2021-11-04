@@ -1,0 +1,12 @@
+// Return a zero-filled string
+//
+//   If i has more than n characters, the full
+//   string representation of i is returned.
+//
+func string zfill(int i, int n) {
+	string zstr = i;
+	while (zstr.length < n) {
+		zstr = "0" + zstr;
+	}
+	return zstr;
+}

@@ -1,0 +1,36 @@
+// Macro due to Gregorio Pellegrini
+// http://profs.scienze.univr.it/caliari/aa1314/advanced_numerical_analysis/Pellegrini.pdf
+
+macro printVTK(file,Th,Xh,u) {
+	Xh xh(2);
+	xh[0] = x;
+	xh[1] = y;
+	file << "# vtk Datafile Version 2.0" << endl;
+	file << "vtk format, created via FreeFem++" << endl;
+	file << "ASCII" << endl;
+	file << "DATASET UNSTRUCTURED GRID" << endl;
+	file << "POINTS " << Xh.ndof << " float" << endl;
+	for (int i = 0; i < Xh.ndof; i++) {
+		file << xh[0][][i] << " " << xh[1][][i] << " " << "0" << endl;
+	}
+	file << "CELLS " << Th.nt << " " << 4*Th.nt << endl;
+	for (int i = 0; i < Th.nt; i++) {
+		file << " 3 " << " ";
+		for (int j = 0; j < 3; j++) {
+			file << Xh(i,j) << " ";
+		}
+		file << endl;
+	}
+	file << "CELL_TYPES " << Th.nt << endl;
+	for (int i = 0; i < Th.nt; i ++) {
+		file << "5 ";
+	}
+	file << endl;
+	file << "POINT_DATA" << Xh.ndof << endl;
+	file << "SCALARS " << "field " << "float "  << endl;
+	for (int i = 0; i < Xh.ndof; i++) {
+	real Thx, Thy;
+	Thx = xh[0][][i];
+	Thy = xh[1][][i];
+	file << u(Thx,Thy) << endl;
+}} // EOM
